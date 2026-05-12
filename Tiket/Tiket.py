@@ -11,7 +11,7 @@ class Tiket:
 
     def __init__(self, **kwargs):
         self.id_pelanggan = kwargs.get("nik")
-        self.pelanggan    = kwargs.get("pelanggan")   
+        self.pelanggan    = kwargs.get("pelanggan")     
         self.penerbangan  = kwargs.get("penerbangan")
         self.dewasa       = kwargs.get("dewasa", 0)
         self.anak         = kwargs.get("anak", 0)
