@@ -24,8 +24,13 @@ class Tiket:
     DISKON_ADA_ANAK     = 0.02      # 2 %
     MIN_PENUMPANG_DISKON = 3        # lebih dari 3
 
+    sebelum_diskon = 0
+    diskon = 0
+    potongan_diskon = 0
+
     def __init__(self, **kwargs):
         self.id_pelanggan = kwargs.get("nik")
+        self.penerbangan = kwargs.get("penerbangan")
         self.dewasa      = kwargs.get("dewasa", 0)
         self.anak        = kwargs.get("anak", 0)
         self.berat_bagasi = kwargs.get("berat_bagasi", 0)
@@ -36,6 +41,19 @@ class Tiket:
     def biayaBagasi(self):
         kelebihan = max(0, self.berat_bagasi - self.BATAS_BAGASI_GRATIS)
         return kelebihan * self.BIAYA_KELEBIHAN_BAGASI
+    
+    def kalkulasiTotal(self):
+        self.sebelum_diskon = self.dewasa * self.penerbangan.tarif_dewasa + self.anak * self.penerbangan.tarif_anak if self.penerbangan is not None else 0
+
+        if self.totalPenumpang <= self.MIN_PENUMPANG_DISKON:
+            self.diskon = 0
+        if self.anak == 0:
+            self.diskon = self.DISKON_SEMUA_DEWASA
+        else:
+            self.diskon = self.DISKON_ADA_ANAK
+        
+
+
 
 
 class Pelanggan:
