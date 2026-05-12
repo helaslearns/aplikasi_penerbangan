@@ -3,15 +3,17 @@ class Pesawat:
         self.nama = kwargs.get("nama")
         self.kapasitas = kwargs.get("kapasitas")
         self.kecepatan = kwargs.get("kecepatan")
-        self.kemampuan_jelajah = kwargs.get("kemampuan jelajah")
+        self.kemampuan_jelajah = kwargs.get("kemampuan_jelajah") 
         self.id_penerbangan = None
     
     def __str__(self):
-        print(f'Nama Pesawat: {self.nama}')
-        print(f'Kapasitas Pesawat: {self.kapasitas} penumpang')
-        print(f'Kecepatan Maksimum: {self.kecepatan}')
-        print(f'Kemampuan Jelajah: {self.kemampuan_jelajah} liter/km')
-        print(f'Penerbangan Pesawat: {self.id_penerbangan}' if self.id_penerbangan != None else None)
+        result  = f'Nama Pesawat: {self.nama}\n'
+        result += f'Kapasitas Pesawat: {self.kapasitas} penumpang\n'
+        result += f'Kecepatan Maksimum: {self.kecepatan}\n'
+        result += f'Kemampuan Jelajah: {self.kemampuan_jelajah} liter/km'
+        if self.id_penerbangan is not None: 
+            result += f'\nPenerbangan Pesawat: {self.id_penerbangan}'
+        return result
 
     def tambahkanPenerbangan(self, id_penerbangan):
         self.id_penerbangan = id_penerbangan
