@@ -1,72 +1,96 @@
-class Pesawat:
-    def __init__(self, **kwargs):
-        self.nama = kwargs.get("nama")
-        self.kapasitas = kwargs.get("kapasitas")
-        self.kecepatan = kwargs.get("kecepatan")
-        self.kemampuan_jelajah = kwargs.get("kemampuan jelajah")
-        self.id_penerbangan = None
-    
-    def __str__(self):
-        print(f'Nama Pesawat: {self.nama}')
-        print(f'Kapasitas Pesawat: {self.kapasitas} penumpang')
-        print(f'Kecepatan Maksimum: {self.kecepatan}')
-        print(f'Kemampuan Jelajah: {self.kemampuan_jelajah} liter/km')
-        print(f'Penerbangan Pesawat: {self.id_penerbangan}' if self.id_penerbangan != None)
-
-    def tambahkanPenerbangan(self, id_penerbangan):
-        self.id_penerbangan = id_penerbangan
-        print(f"Penerbangan [{id_penerbangan}] Berhasil Dijadwalkan untuk Pesawat [{self.nama}]")
-
-class Tiket:
-    BATAS_BAGASI_GRATIS = 30        # kg
-    BIAYA_KELEBIHAN_BAGASI = 50_000 # Rp/kg
-    DISKON_SEMUA_DEWASA = 0.03      # 3 %
-    DISKON_ADA_ANAK     = 0.02      # 2 %
-    MIN_PENUMPANG_DISKON = 3        # lebih dari 3
-
-    sebelum_diskon = 0
-    diskon = 0
-    potongan_diskon = 0
-
-    def __init__(self, **kwargs):
-        self.id_pelanggan = kwargs.get("nik")
-        self.penerbangan = kwargs.get("penerbangan")
-        self.dewasa      = kwargs.get("dewasa", 0)
-        self.anak        = kwargs.get("anak", 0)
-        self.berat_bagasi = kwargs.get("berat_bagasi", 0)
-
-    def totalPenumpang(self):
-        return self.dewasa + self.anak
-
-    def biayaBagasi(self):
-        kelebihan = max(0, self.berat_bagasi - self.BATAS_BAGASI_GRATIS)
-        return kelebihan * self.BIAYA_KELEBIHAN_BAGASI
-    
-    def kalkulasiTotal(self):
-        self.sebelum_diskon = self.dewasa * self.penerbangan.tarif_dewasa + self.anak * self.penerbangan.tarif_anak if self.penerbangan is not None else 0
-
-        if self.totalPenumpang <= self.MIN_PENUMPANG_DISKON:
-            self.diskon = 0
-        if self.anak == 0:
-            self.diskon = self.DISKON_SEMUA_DEWASA
-        else:
-            self.diskon = self.DISKON_ADA_ANAK
-        
-
-
-
-
-class Pelanggan:
-    def __init__(self, **kwargs):
-        pass
-
-class Penerbangan:
-    def __init__(self, **kwargs):
-        pass
+from Pelanggan import Pelanggan
+from Penerbangan import Penerbangan
+from Pesawat import Pesawat
+from Tiket import Tiket
 
 
 def main():
-    exit()
+        # --- Data pesawat ---
+    b737 = Pesawat(
+        nama="Boeing 737-800",
+        kapasitas=162,
+        kecepatan=842,
+        kemampuan_jelajah=5765,
+    )
+    a320 = Pesawat(
+        nama="Airbus A320",
+        kapasitas=180,
+        kecepatan=833,
+        kemampuan_jelajah=6150,
+    )
+ 
+    print("=== Data Pesawat ===")
+    print(b737)
+    print()
+    print(a320)
+    print()
+ 
+    # --- Data penerbangan ---
+    pnb1 = Penerbangan(
+        id_penerbangan="GA-101",
+        asal="Jakarta (CGK)",
+        tujuan="Surabaya (SUB)",
+        pesawat=b737,
+        tanggal="2025-08-01",
+        waktu="08:00",
+        tarif_dewasa=750_000,
+        tarif_anak=500_000,
+    )
+    pnb2 = Penerbangan(
+        id_penerbangan="QZ-202",
+        asal="Jakarta (CGK)",
+        tujuan="Bali (DPS)",
+        pesawat=a320,
+        tanggal="2025-08-05",
+        waktu="14:30",
+        tarif_dewasa=900_000,
+        tarif_anak=600_000,
+    )
+ 
+    print("\n=== Data Penerbangan ===")
+    print(pnb1)
+    print()
+    print(pnb2)
+    print()
+ 
+    # --- Pemesanan tiket ---
+    pelanggan1 = Pelanggan(
+        nik="3471234567890001",
+        nama="Budi Santoso",
+        email="budi@email.com",
+        no_hp="081234567890",
+    )
+ 
+    # Contoh 1: 4 dewasa, bagasi 35 kg  → diskon 3%, kena biaya bagasi
+    tiket1 = Tiket(
+        pelanggan=pelanggan1,
+        penerbangan=pnb1,
+        dewasa=4,
+        anak=0,
+        berat_bagasi=35,
+    )
+ 
+    pelanggan2 = Pelanggan(
+        nik="3471234567890002",
+        nama="Sari Dewi",
+        email="sari@email.com",
+        no_hp="089876543210",
+    )
+ 
+    # Contoh 2: 2 dewasa + 2 anak, bagasi 20 kg → diskon 2%, bagasi gratis
+    tiket2 = Tiket(
+        pelanggan=pelanggan2,
+        penerbangan=pnb2,
+        dewasa=2,
+        anak=2,
+        berat_bagasi=20,
+    )
+ 
+    print("\n=== Struk Tiket 1 ===")
+    print(tiket1)
+ 
+    print("\n=== Struk Tiket 2 ===")
+    print(tiket2)
 
 if __name__=="main":
     main()
